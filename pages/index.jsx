@@ -29,13 +29,9 @@ export default function Home() {
     }
   };
 
-  const renderNotConnectedContainer = () => (
-    <button onClick={connectWallet}>Connect to Wallet</button>
-  );
-
   return (
-    <main className="bg-green-500 h-screen flex">
-      <nav className="bg-[#20253D] shadow-xl px-6 py-10">
+    <main className="fbg-green-500 h-screen">
+      <nav className="absolute left-0 h-screen z-10 bg-[#20253D] shadow-xl px-6 py-8">
         <ul className="flex flex-col gap-7 h-full">
           <li>
             <button>
@@ -60,38 +56,50 @@ export default function Home() {
           </li>
         </ul>
       </nav>
-      <section className="relative grow">
-        <div className="text-right rounded-sm p-3 bg-[#20253D] inline-block text-white font-bold ml-auto">
-          {currentAccount === "" ? (
-            renderNotConnectedContainer()
-          ) : (
-            <Link href="/menu">
-              <button>Wallet connected, please click to continue.</button>
-            </Link>
-          )}
-        </div>
+      <div
+        className="cursor-pointer grid h-full w-full overflow-auto"
+        style={{
+          gridTemplateColumns: "repeat(35, 50px)",
+          gridTemplateRows: "repeat(20, 50px)",
+        }}
+      >
+        {[...Array(35 * 20)].map(() => (
+          <div style={{ width: "55px" }}>
+            <Image src="/tiles/tile915.svg" height={55} width={55} />
+          </div>
+        ))}
+      </div>
 
-        <div className="absolute flex items-center gap-4 bg-[#20253D] left-1/2 -translate-x-1/2 bottom-10 rounded-full px-7 py-3">
-          <button className="flex">
-            <Image
-              src="/avatar.svg"
-              className="m-auto"
-              height={25}
-              width={25}
-            />
+      <div className="m-3 mr-8 absolute right-0 top-0">
+        {currentAccount === "" ? (
+          <button
+            className="rounded-lg px-4 py-2 bg-[#20253D] text-white font-bold"
+            onClick={connectWallet}
+          >
+            Connect to Wallet
           </button>
-          <p className="text-white min-w-[7rem] font-semibold">Bobvin</p>
-          <button className="flex">
-            <Image src="/train.svg" className="m-auto" height={20} width={20} />
-          </button>
-          <button className="flex">
-            <Image src="/mic.svg" className="m-auto" height={20} width={20} />
-          </button>
-          <button className="flex">
-            <Image src="/map.svg" className="m-auto" height={20} width={20} />
-          </button>
-        </div>
-      </section>
+        ) : (
+          <Link href="/menu">
+            <button>Wallet connected, please click to continue.</button>
+          </Link>
+        )}
+      </div>
+
+      <div className="absolute flex items-center gap-4 bg-[#20253D] left-1/2 -translate-x-1/2 bottom-10 rounded-full px-7 py-3">
+        <button className="flex">
+          <Image src="/avatar.svg" className="m-auto" height={25} width={25} />
+        </button>
+        <p className="text-white min-w-[7rem] font-semibold">Bobvin</p>
+        <button className="flex">
+          <Image src="/train.svg" className="m-auto" height={20} width={20} />
+        </button>
+        <button className="flex">
+          <Image src="/mic.svg" className="m-auto" height={20} width={20} />
+        </button>
+        <button className="flex">
+          <Image src="/map.svg" className="m-auto" height={20} width={20} />
+        </button>
+      </div>
     </main>
   );
 }
