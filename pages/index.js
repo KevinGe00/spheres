@@ -3,10 +3,32 @@ import Link from 'next/link'
 import axios from 'axios'
 import styles from '../styles/Home.module.css'
 import { useGlobalState, setCurrentAccount } from './state';
-
+import { useEffect } from 'react';
 
 export default function Home() {
   const [currentAccount] = useGlobalState('currentAccount');
+
+  const checkIfWalletIsConnected = async () => {
+    const { ethereum } = window;
+
+    if (!ethereum) {
+      alert("Make sure you have metamask!");
+      return;
+    }
+
+      const accounts = await ethereum.request({ method: 'eth_accounts' });
+
+    /*
+    * User can have multiple authorized accounts
+    */
+    if (accounts.length !== 0) {
+      const account = accounts[0];
+      console.log("Found an authorized account:", account);
+      setCurrentAccount(account)
+    } else {
+      console.log("No authorized account found")
+    }
+  }
 
   const connectWallet = async () => {
     try {
@@ -31,6 +53,10 @@ export default function Home() {
       Connect to Wallet
     </button>
   );
+
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, []);
 
   return (
     <div className={styles.button}>
