@@ -1,11 +1,12 @@
 import { ethers } from 'ethers'
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
 import styles from '../styles/Home.module.css'
+import { useGlobalState, setCurrentAccount } from './state';
+
 
 export default function Home() {
-  const [currentAccount, setCurrentAccount] = useState("");
+  const [currentAccount] = useGlobalState('currentAccount');
 
   const connectWallet = async () => {
     try {
@@ -20,7 +21,6 @@ export default function Home() {
 
       console.log("Connected", accounts[0]);
       setCurrentAccount(accounts[0]);
-      setupEventListener()
     } catch (error) {
       console.log(error);
     }
@@ -37,11 +37,12 @@ export default function Home() {
       {currentAccount === "" ? (
         renderNotConnectedContainer()
       ) : (
-        <Link href="/menu">
-          <button>
-            Wallet connected, please click to continue.
-          </button>
-        </Link>
+        <form>
+          <input type="text" autoComplete="name" required />
+          <Link href="/menu">
+            <button>Register</button>
+          </Link>
+        </form>
       )}
     </div>
   )

@@ -1,8 +1,11 @@
+import { useGlobalState } from './state';
+
 export default function Menu() {
-  
+  const [currentAccount] = useGlobalState('currentAccount');
+
   return (
     <div>
-     test
+     {currentAccount}
     </div>
   )
 }
