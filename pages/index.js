@@ -2,6 +2,12 @@ import { ethers } from 'ethers'
 import Link from 'next/link'
 import axios from 'axios'
 import styles from '../styles/Home.module.css'
+import Image from 'next/image'
+import logo from './Images/Landing/logo.png';
+import shpereText from './Images/Landing/Spheres.png';
+import text from './Images/Landing/Play. Connect. Explore..png';
+import connectWalletButton from './Images/Landing/connectWallet.png';
+
 import { useGlobalState, setCurrentAccount } from './state';
 import { useEffect } from 'react';
 
@@ -49,9 +55,7 @@ export default function Home() {
   }
 
   const renderNotConnectedContainer = () => (
-    <button onClick={connectWallet}>
-      Connect to Wallet
-    </button>
+    <Image src={connectWalletButton} onClick={connectWallet}/>
   );
 
   useEffect(() => {
@@ -59,12 +63,17 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={styles.button}>
+    <div class='flex flex items-center justify-center h-screen flex-col space-y-4'>
+
+      <Image src={logo} />
+      <Image src={shpereText} />
+      <Image src={text} />
+      
       {currentAccount === "" ? (
         renderNotConnectedContainer()
       ) : (
         <form>
-          <input type="text" autoComplete="name" required />
+          <input type="text" class="border-2 border-black rounded-sm" required />
           <Link href="/menu">
             <button>Register</button>
           </Link>
