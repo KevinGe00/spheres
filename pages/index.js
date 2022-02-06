@@ -16,7 +16,7 @@ export default function Home() {
       return;
     }
 
-      const accounts = await ethereum.request({ method: 'eth_accounts' });
+    const accounts = await ethereum.request({ method: 'eth_accounts' });
 
     /*
     * User can have multiple authorized accounts
