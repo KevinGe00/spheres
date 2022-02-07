@@ -4,6 +4,7 @@ import Link from "next/link";
 import axios from "axios";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
+import house from "./house.js";
 
 export default function Home() {
   const [currentAccount, setCurrentAccount] = useState("");
@@ -28,6 +29,34 @@ export default function Home() {
       console.log(error);
     }
   };
+
+  const [playerPosition, setPlayerPosition] = useState({ x: 20, y: 10 });
+
+  function downHandler({ key }) {
+    switch (key) {
+      case "w":
+        setPlayerPosition((pp) => ({ x: pp.x, y: pp.y - 1 }));
+        return;
+      case "s":
+        setPlayerPosition((pp) => ({ x: pp.x, y: pp.y + 1 }));
+        return;
+      case "a":
+        setPlayerPosition((pp) => ({ x: pp.x - 1, y: pp.y }));
+        return;
+      case "d":
+        setPlayerPosition((pp) => ({ x: pp.x + 1, y: pp.y }));
+        return;
+      default:
+        return;
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("keydown", downHandler);
+    return () => {
+      window.removeEventListener("keydown", downHandler);
+    };
+  }, []);
 
   return (
     <main className="fbg-green-500 h-screen">
@@ -59,15 +88,34 @@ export default function Home() {
       <div
         className="cursor-pointer grid h-full w-full overflow-auto"
         style={{
-          gridTemplateColumns: "repeat(35, 50px)",
+          gridTemplateColumns: "repeat(40, 50px)",
           gridTemplateRows: "repeat(20, 50px)",
         }}
       >
-        {[...Array(35 * 20)].map(() => (
-          <div style={{ width: "55px" }}>
-            <Image src="/tiles/tile915.svg" height={55} width={55} />
-          </div>
-        ))}
+        {[...Array(20)].map((_, y) =>
+          [...Array(40)].map((_, x) => {
+            const tile = house.find((tile) => tile.x === x && tile.y === y);
+
+            return (
+              <div className="relative" style={{ width: "55px" }}>
+                {tile ? (
+                  <div className="absolute">
+                    <Image src={tile.tile} height={55} width={55} />
+                  </div>
+                ) : (
+                  <div className="absolute">
+                    <Image src="/tiles/tile915.svg" height={55} width={55} />
+                  </div>
+                )}
+                {playerPosition.x === x && playerPosition.y === y && (
+                  <div className="absolute">
+                    <Image src="/avatar.svg" height={55} width={55} />
+                  </div>
+                )}
+              </div>
+            );
+          })
+        )}
       </div>
 
       <div className="m-3 mr-8 absolute right-0 top-0">
