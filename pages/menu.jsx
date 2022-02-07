@@ -42,11 +42,16 @@ export default function Menu() {
       ) : (
         <div class="space-y-2">
           {userNFTCollections.map((collection) => (
-            <div className="border-2 border-black rounded-md px-6 py-4 flex items-center gap-5">
-              <p className="font-semibold">{collection}</p>
+            <div className="border-2 border-black rounded-xl px-6 py-4 flex items-center gap-7">
+              <p className="font-bold">{collection}</p>
+
+              <p className="ml-auto text-sm">
+                Players: {(Math.random() * 1000).toFixed(0)}
+              </p>
+
               <Link href="/sphere">
                 <button
-                  className="ml-auto border-2 border-black rounded-full px-3 py-1"
+                  className="border-2 border-black rounded-full px-3 py-1 font-bold"
                   onClick={() => setCurrentCollection(collection)}
                 >
                   Join
