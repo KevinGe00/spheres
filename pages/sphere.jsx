@@ -28,6 +28,10 @@ export default function Home() {
   }
 
   useEffect(() => {
+    alert(
+      "Your NFT has been minted: " +
+        "https://testnets.opensea.io/assets/mumbai/0xdcb5dd3bda620aed6641a6fc90961be78203fb54/1"
+    );
     window.addEventListener("keydown", downHandler);
     return () => {
       window.removeEventListener("keydown", downHandler);

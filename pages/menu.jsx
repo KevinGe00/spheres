@@ -6,8 +6,7 @@ import Image from "next/image";
 import logo from "./Images/Landing/logo.png";
 import YourSphere from "./Images/SphereSelection/Your Spheres.png";
 import Link from "next/link";
-import NFT from '../utils/NFT.json';
-
+import NFT from "../utils/NFT.json";
 
 export default function Menu() {
   const [userNFTCollections, setUserNFTCollections] = useState([]);
@@ -16,38 +15,45 @@ export default function Menu() {
     useGlobalState("currentCollection");
   const { getNFTBalances, data, error, isLoading, isFetching } =
     useNFTBalances();
-    const CONTRACT_ADDRESS = "0xdcb5dD3BDa620AEd6641A6Fc90961BE78203Fb54";
+  const CONTRACT_ADDRESS = "0xdcb5dD3BDa620AEd6641A6Fc90961BE78203Fb54";
 
-    const askContractToMintNft = async () => {
-      try {
-        const { ethereum } = window;
-    
-        if (ethereum) {
-          //const provider = new ethers.providers.Web3Provider(polygon);
-          const provider = new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com")
-          const signer = provider.getSigner();
-          const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, NFT.abi, signer);
-    
-          console.log("Going to pop wallet now to pay gas...")
-          let nftTxn = await connectedContract.createToken(currentCollection);
-            
-          console.log("Mining...please wait.")
-          await nftTxn.wait();
-          
-          alert(`Minted :) see transaction: https://mumbai.polygonscan.com/tx/${nftTxn.hash}`);
-    
-        } else {
-          console.log("Ethereum object doesn't exist!");
-        }
-      } catch (error) {
-        console.log(error)
+  const askContractToMintNft = async () => {
+    try {
+      const { ethereum } = window;
+
+      if (ethereum) {
+        //const provider = new ethers.providers.Web3Provider(polygon);
+        const provider = new ethers.providers.JsonRpcProvider(
+          "https://rpc-mumbai.maticvigil.com"
+        );
+        const signer = provider.getSigner();
+        const connectedContract = new ethers.Contract(
+          CONTRACT_ADDRESS,
+          NFT.abi,
+          signer
+        );
+
+        console.log("Going to pop wallet now to pay gas...");
+        let nftTxn = await connectedContract.createToken(currentCollection);
+
+        console.log("Mining...please wait.");
+        await nftTxn.wait();
+
+        alert(
+          `Minted :) see transaction: https://mumbai.polygonscan.com/tx/${nftTxn.hash}`
+        );
+      } else {
+        console.log("Ethereum object doesn't exist!");
       }
+    } catch (error) {
+      console.log(error);
     }
-  
-    const handleSelect = (col) => {
-      setCurrentCollection(col)
-      askContractToMintNft()
-    }
+  };
+
+  const handleSelect = (col) => {
+    setCurrentCollection(col);
+    askContractToMintNft();
+  };
 
   useEffect(() => {
     getNFTBalances({
