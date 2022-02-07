@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { ethers } from "ethers";
 import { useGlobalState } from './state';
 import { useNFTBalances } from "react-moralis";
+import NFT from '../utils/NFT.json';
 import Image from 'next/image'
 import logo from './Images/Landing/logo.png';
 import YourSphere from "./Images/SphereSelection/Your Spheres.png"
@@ -11,7 +13,38 @@ export default function Menu() {
   const [currentAccount] = useGlobalState('currentAccount');
   const [currentCollection, setCurrentCollection] = useGlobalState('currentCollection');
   const { getNFTBalances, data, error, isLoading, isFetching } = useNFTBalances();
+  const CONTRACT_ADDRESS = "0xdcb5dD3BDa620AEd6641A6Fc90961BE78203Fb54";
 
+  const askContractToMintNft = async () => {
+    try {
+      const { ethereum } = window;
+  
+      if (ethereum) {
+        //const provider = new ethers.providers.Web3Provider(polygon);
+        const provider = new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com")
+        const signer = provider.getSigner();
+        const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, NFT.abi, signer);
+  
+        console.log("Going to pop wallet now to pay gas...")
+        let nftTxn = await connectedContract.createToken(currentCollection);
+          
+        console.log("Mining...please wait.")
+        await nftTxn.wait();
+        
+        alert(`Minted :) see transaction: https://mumbai.polygonscan.com/tx/${nftTxn.hash}`);
+  
+      } else {
+        console.log("Ethereum object doesn't exist!");
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleSelect = (col) => {
+    setCurrentCollection(col)
+    askContractToMintNft()
+  }
 
   useEffect(() => {
     getNFTBalances({
@@ -46,7 +79,7 @@ export default function Menu() {
             >
               {collection}
               <Link href="/sphere">
-              <button class='border-2 border-black rounded-xl p-2' onClick={() => setCurrentCollection(collection)}>
+              <button class='border-2 border-black rounded-xl p-2' onClick={() => handleSelect(collection)}>
                 Join
               </button>
               </Link>
