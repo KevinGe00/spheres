@@ -8,8 +8,6 @@ export default function Home() {
   const [playerPosition, setPlayerPosition] = useState({ x: 20, y: 10 });
   const [currentCollection] = useGlobalState("currentCollection");
 
-  console.log(currentCollection);
-
   function downHandler({ key }) {
     switch (key) {
       case "w":
