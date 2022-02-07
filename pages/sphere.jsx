@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import house from "./house.js";
-import { useGlobalState } from './state';
+import { useGlobalState } from "./state";
+import logo from "./Images/Landing/logo.png";
 
 export default function Home() {
-  
   const [playerPosition, setPlayerPosition] = useState({ x: 20, y: 10 });
-  const [currentCollection] = useGlobalState('currentCollection');
+  const [currentCollection] = useGlobalState("currentCollection");
+
+  console.log(currentCollection);
 
   function downHandler({ key }) {
     switch (key) {
@@ -35,13 +37,26 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="fbg-green-500 h-screen">
-      <nav className="absolute left-0 h-screen z-10 bg-[#20253D] shadow-xl px-6 py-8">
+    <main className="h-screen relative">
+      <h2 className="bg-black shadow-lg absolute right-10 top-5 z-10 text-white px-4 py-2 font-bold rounded-lg">
+        {currentCollection}
+      </h2>
+
+      <nav className="absolute left-0 h-screen z-10 bg-black shadow-xl px-6 py-8">
         <ul className="flex flex-col gap-7 h-full">
           <li>
             <button>
-              <Image src="/logo.svg" height={30} width={30} />
+              <Image src={logo} height={40} width={40} />
             </button>
+          </li>
+          <li>
+            <Image src="/boredape.png" height={40} width={40} />
+          </li>
+          <li>
+            <Image src="/rainbow.png" height={40} width={40} />
+          </li>
+          <li>
+            <Image src="/azuki.png" height={40} width={40} />
           </li>
           <li className="mt-auto">
             <button
@@ -94,11 +109,14 @@ export default function Home() {
         )}
       </div>
 
-      <div className="absolute flex items-center gap-4 bg-[#20253D] left-1/2 -translate-x-1/2 bottom-10 rounded-full px-7 py-3">
+      <div className="absolute flex items-center gap-4 bg-black left-1/2 -translate-x-1/2 bottom-10 rounded-full px-7 py-3 shadow-2xl">
         <button className="flex">
           <Image src="/avatar.svg" className="m-auto" height={25} width={25} />
         </button>
-        <p className="text-white min-w-[7rem] font-semibold">Bobvin</p>
+        <div>
+          <p className="text-white min-w-[7rem] font-semibold">Bobvin</p>
+          <p className="text-white text-xs">0xf04...a3aa</p>
+        </div>
         <button className="flex">
           <Image src="/train.svg" className="m-auto" height={20} width={20} />
         </button>
